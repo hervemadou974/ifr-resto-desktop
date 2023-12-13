@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion de Livraison</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            color: black; /* Text color: black */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        h1 {
+            color: #0057A6; /* Blue color of the logo title */
+        }
+
+        h2 {
+            color: #009EDD; /* Light blue color of the logo */
+        }
+
+        h3 {
+            color: #007C51;
+        }
+
+        label {
+            color: #007C51;
+        }
+
+        /* Input border color */
+        .form-control {
+            border: 1px solid #007C51;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Button color */
+        .btn-primary {
+            background-color: #FBD400; /* Yellow */
+            border: 1px solid #FBD400;
+        }
+        
+        /* Table header color */
+        .table thead th {
+            background-color: #009EDD; /* Light blue color of the logo */
+            color: white;
+            margin-bottom: 30px; /* Add margin-bottom with 30px */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Gestion de Livraison</h1>
+
+        <form id="livraisonForm">
+            <!-- Delivery manager -->
+            <!-- Entry 1 -->
+            <div class="form-group">
+                <label for="login">Responsable de cuisine :</label>
+                <input type="text" class="form-control" id="login" required>
+            </div>
+            <div class="form-group">
+                <label for="nomRegistre">Bon de livraison :</label>
+                <input type="text" class="form-control" id="nomRegistre" required>
+            </div>
+            <div class="form-group">
+                <label for="repas1">Plat en Entrée :</label>
+                <input type="text" class="form-control" id="repas1" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="quantite1">Quantité :</label>
+                    <input type="text" class="form-control" id="quantite1" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="temperature1">Température :</label>
+                    <input type="text" class="form-control" id="temperature1" required>
+                </div>
+            </div>
+
+            <!-- Entry 2 -->
+            <div class="form-group">
+                <label for="repas2">Plat de résistance :</label>
+                <input type="text" class="form-control" id="repas2" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="quantite2">Quantité :</label>
+                    <input type="text" class="form-control" id="quantite2" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="temperature2">Température :</label>
+                    <input type="text" class="form-control" id="temperature2" required>
+                </div>
+            </div>
+
+            <!-- Entry 3 -->
+            <div class="form-group">
+                <label for="repas3">Dessert :</label>
+                <input type="text" class="form-control" id="repas3" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="quantite3">Quantité :</label>
+                    <input type="text" class="form-control" id="quantite3" required>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="temperature3">Température :</label>
+                    <input type="text" class="form-control" id="temperature3" required>
+                </div>
+            </div>
+
+            <!-- Repeat the above form structure for additional entries -->
+            
+            <button type="button" class="btn btn-primary" onclick="ajouterLivraison()">Ajouter Livraison</button>
+            
+            <!-- Add a Logout button -->
+            <button type="button" class="btn btn-danger btn-block mt-3" onclick="logout()">Se Déconnecter</button>
+        </form>
+
+        <table class="table mt-4" id="livraisonTable">
+            <thead>
+                <tr>
+                    <th>Responsable de livraison</th>
+                    <th>Bon de livraison</th>
+                    <th>Plat en Entrée</th>
+                    <th>Quantité</th>
+                    <th>Température</th>
+                    <th>Plat de résistance</th>
+                    <th>Quantité</th>
+                    <th>Température</th>
+                    <th>Dessert</th>
+                    <th>Quantité</th>
+                    <th>Température</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Table content will be dynamically added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        // Function to handle logout
+        function logout() {
+            // You can add your logout logic here
+            alert("vous vous déconnecté");
+            
+            // Redirect the user to the login page or any other appropriate page
+            window.location.href = "login.html";
+        }
+        
+        // Your JavaScript code here
+        async function ajouterLivraison() {
+            // Get form values
+            const utilisateurData=JSON.parse(localStorage.getItem("utilisateurData"));
+            console.log(utilisateurData);
+            const etablissementId=utilisateurData.etablissementId
+            const utilisateurId=utilisateurData.id
+            const responsable = $("#login").val();
+            const bonLivraison = $("#nomRegistre").val();
+            const platEntree = $("#repas1").val();
+            const quantiteEntree = $("#quantite1").val();
+            const temperatureEntree = $("#temperature1").val();
+            const platResistance = $("#repas2").val();
+            const quantiteResistance = $("#quantite2").val();
+            const temperatureResistance = $("#temperature2").val();
+            const dessert = $("#repas3").val();
+            const quantiteDessert = $("#quantite3").val();
+            const temperatureDessert = $("#temperature3").val();
+
+            const lignesRegistre = []
+
+            lignesRegistre.push({
+                repas: platEntree,
+                quantite: quantiteEntree,
+                temperature : temperatureEntree
+            })
+
+            lignesRegistre.push({
+                repas: platResistance,
+                quantite: quantiteResistance,
+                temperature : temperatureResistance
+            })
+            
+            lignesRegistre.push({
+                repas: dessert,
+                quantite: quantiteDessert,
+                temperature : temperatureDessert
+            })
+            
+            const newRegistre = await fetch('https://ifr-restau-api.vercel.app/api/registre/createone', {
+                method: 'POST',
+                body: JSON.stringify({
+                    "utilisateurId": utilisateurId,
+                    "nom": bonLivraison,
+                    "etablissementId": etablissementId,
+                    "lignesResgistres": lignesRegistre
+                }
+                )
+            })
+            
+        }
+        
+        async function recupererlivraison(){
+            const utilisateurData=JSON.parse(localStorage.getItem("utilisateurData"));
+            const etablissementId=utilisateurData.etablissementId
+            const response=await fetch(`https://ifr-restau-api.vercel.app/api/registre/getallperetablissement?etablissementId=${etablissementId}`)
+            const registres = await response.json()
+            console.log(registres);
+            // Get the table body element
+            const tableBody = $("#livraisonTable tbody");
+        
+            // Create a new row
+            
+            registres.registres.map(registre => {
+                const newRow = $("<tr>");
+                    
+        newRow.append(`<td>${registre.nom}</td>`);
+        newRow.append(`<td>${registre.nom}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[0].repas}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[0].quantite}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[0].temperature}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[1].repas}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[1].quantite}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[1].temperature}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[2].repas}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[2].quantite}</td>`);
+        newRow.append(`<td>${registre.lignesRegistres[2].temperature}</td>`);
+
+                
+                // Append the row to the table body
+                tableBody.append(newRow);
+                })
+                // Append form values to the row
+        }
+        
+    </script>
+        <script>
+            window.onload = recupererlivraison()
+        </script>
+    </body>
+    
+    </html>
+    
